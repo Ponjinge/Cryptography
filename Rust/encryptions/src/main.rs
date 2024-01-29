@@ -22,6 +22,17 @@ impl UserWeak {
         UserWeak { name, prime_p, prime_q, e, n, eulers_totient, d, inbox: Vec::new(), }
     }
 
+    fn encrypt_message(&self, message: &BigInt) -> BigInt {
+        message.modpow(&self.e, &self.n)
+    }
+
+    fn decrypt_message(&self, cipher: &BigInt) -> BigInt {
+        cipher.modpow(&self.d, &self.n)
+    }
+
+    fn send_message(&self, recipient: UserWeak, message: &i32)-> () {
+
+    }
 
 
 }
@@ -48,6 +59,8 @@ fn mod_inv(a: &BigInt, m: &BigInt) ->Option<BigInt>{
 
 
 
+
+
 fn main() {
     // Example prime numbers and exponent for RSA. In a real application, choose large primes.
     //John = User_weak("John", 27647, 60041, 1579)
@@ -57,7 +70,17 @@ fn main() {
 
     let user = UserWeak::new("John Doe".to_string(), prime_p, prime_q, e);
 
+
+    // Let us check is a user can be created
     println!("User created: {:?}", user);
+
+    // Encrypt and Decrypt a message (here a BigInt)
+    let mess = BigInt::from(123u32);
+    let cipher = user.encrypt_message(&mess);
+    println!("{}", cipher);
+    let mess2 = user.decrypt_message(&cipher);
+    println!("{}", mess2);
 }
+
 
 
